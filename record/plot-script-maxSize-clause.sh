@@ -17,14 +17,13 @@ mkdir -p $tmpdir
 echo 'temp dir: ' $tmpdir
 
 
-for file in lia_ms5_time lia_ms50_time lia_ms100_time lia_ms500_time lia_ms1000_time; do
+for file in lia_ms1000_clause_old_out lia_ms100_clause_out; do
   echo ${resultdir}/$file
-	tail +2 ${resultdir}/$file \
-		|awk '{print $8 "  " $0}' \
+	tail +1 ${resultdir}/$file \
+		|awk '{print $2"  " $0}' \
 		|sort -k1 -n \
 		|nl >$tmpdir/$file.list
 done
-
 
 (
 	echo "set term pngcairo"
@@ -35,9 +34,10 @@ done
 	echo "set ylabel 'number of instance'"
 	echo -n "plot "
 
-	for file in lia_ms5_time lia_ms50_time lia_ms100_time lia_ms500_time lia_ms1000_time; do
+for file in lia_ms1000_clause_old_out lia_ms100_clause_out; do
 		echo -n "\"$tmpdir/$file.list\" using 2:1 title "\"$file\"$3" with lines, "
 
 	done
 	echo
 ) | gnuplot
+
